@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.vue.vuedata.dao.ProductDao">
+
+    <select id="SelectProductByName" parameterType="hashmap" resultType="com.demo.vue.vuedata.pojo.Product">
+        select * from product
+        <where>
+            <if test="productName!=null and productName!=''">
+                productName Like '%${productName}%'
+            </if>
+        </where>
+        limit #{pageStart},#{pageSize}
+    </select>
+
+
+    <select id="SelectProductCount" parameterType="string" resultType="integer">
+        select count(*) from product
+        <where>
+            <if test="productName!=null and productName!=''">
+                productName Like '%${productName}%'
+            </if>
+        </where>
+    </select>
+
+    <select id="selectProductById" parameterType="integer" resultType="Product">
+        select * from product where id=#{id}
+    </select>
+
+    <update id="updateProduct" parameterType="Product">
+        update product set id= #{id},productName=#{productName}
+        ,product_price=#{product_price},total=#{total} where id=#{id}
+    </update>
+
+
+    <select id="SelectProductByName2" parameterType="String" resultType="com.demo.vue.vuedata.pojo.Product">
+        select * from product
+        <where>
+            <if test="productName!=null and productName!=''">
+                productName Like '%${productName}%'
+            </if>
+        </where>
+
+    </select>
+
+    <delete id="deleteProductsByids" parameterType="list">
+        delete from product where id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>
